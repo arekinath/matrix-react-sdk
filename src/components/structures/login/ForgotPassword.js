@@ -121,12 +121,13 @@ module.exports = React.createClass({
     },
 
     _onExportE2eKeysClicked: function() {
-        Modal.createTrackedDialogAsync('Export E2E Keys', 'Forgot Password',
-            import('../../../async-components/views/dialogs/ExportE2eKeysDialog'),
-            {
-                matrixClient: MatrixClientPeg.get(),
-            },
-        );
+        Modal.createTrackedDialogAsync('Export E2E Keys', 'Forgot Password', (cb) => {
+            require.ensure(['../../../async-components/views/dialogs/ExportE2eKeysDialog'], () => {
+                cb(require('../../../async-components/views/dialogs/ExportE2eKeysDialog'));
+            }, "e2e-export");
+        }, {
+            matrixClient: MatrixClientPeg.get(),
+        });
     },
 
     onInputChanged: function(stateKey, ev) {

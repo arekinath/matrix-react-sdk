@@ -28,12 +28,13 @@ export default (props) => {
                   "please export your room keys for safe-keeping.");
 
     const onExportE2eKeysClicked = () => {
-        Modal.createTrackedDialogAsync('Export E2E Keys', '',
-            import('../../../async-components/views/dialogs/ExportE2eKeysDialog'),
-            {
+        Modal.createTrackedDialogAsync('Export E2E Keys', '', (cb) => {
+            require.ensure(['../../../async-components/views/dialogs/ExportE2eKeysDialog'], () => {
+                cb(require('../../../async-components/views/dialogs/ExportE2eKeysDialog'));
+            }, "e2e-export");
+        }, {
                 matrixClient: MatrixClientPeg.get(),
-            },
-        );
+        });
     };
 
     const onFinished = (confirmed) => {

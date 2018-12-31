@@ -59,14 +59,15 @@ export default React.createClass({
 
     _onResetRecoveryClick: function() {
         this.props.onFinished(false);
-        Modal.createTrackedDialogAsync('Key Backup', 'Key Backup',
-            import('../../../../async-components/views/dialogs/keybackup/CreateKeyBackupDialog'),
-            {
-                onFinished: () => {
-                    this._loadBackupStatus();
-                },
+        Modal.createTrackedDialogAsync('Key Backup', 'Key Backup', (cb) => {
+            require.ensure(['../../../../async-components/views/dialogs/keybackup/CreateKeyBackupDialog'], () => {
+                cb(require('../../../../async-components/views/dialogs/keybackup/CreateKeyBackupDialog'));
+            }, "key-backup");
+        }, {
+            onFinished: () => {
+                this._loadBackupStatus();
             },
-        );
+        });
     },
 
     _onRecoveryKeyChange: function(e) {
